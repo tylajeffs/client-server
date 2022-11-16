@@ -84,9 +84,9 @@ int main(int argc, char *argv[]) {
 void handle_request(int socketfd) {
     char message[200];
     char buffer[200];
-    //sprintf(message, "Message from the server");
-
     int bytes_read = 0;
+    long int file_bytes = 0;
+
 
     bytes_read = read(socketfd, buffer, 200); //max bytes to read is 200
     buffer[bytes_read] = 0;
@@ -103,6 +103,10 @@ void handle_request(int socketfd) {
         printf("file opened\n");
     }
 
+    //get the size of the file (in bytes)
+    fseek(ptr, 0L, SEEK_END);
+    file_bytes = ftell(ptr);
+
     //read the contents of the file
     if(fgets(message, 200, ptr) != NULL) {
         printf("File contents: %s\n", message);
@@ -111,6 +115,8 @@ void handle_request(int socketfd) {
     //close the file
     fclose(ptr);
 
-    //send message back to the client
+
+    //send message back to the client (bytes & file contents)
+    write(socketfd, file_bytes, strlen(file_bytes));
     write(socketfd, message, strlen(message));
 }
