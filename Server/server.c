@@ -84,6 +84,7 @@ int main(int argc, char *argv[]) {
 void handle_request(int socketfd) {
     char message[200];
     char buffer[200];
+    char bytes_size[20];
     int bytes_read = 0;
     long int file_bytes = 0;
 
@@ -104,8 +105,9 @@ void handle_request(int socketfd) {
     }
 
     //get the size of the file (in bytes)
-    fseek(ptr, 0L, SEEK_END);
-    file_bytes = ftell(ptr);
+    //fseek(ptr, 0L, SEEK_END);
+    //file_bytes = ftell(ptr);
+    //sprintf(bytes_size, "%ld", file_bytes);
 
     //read the contents of the file
     if(fgets(message, 200, ptr) != NULL) {
@@ -117,6 +119,6 @@ void handle_request(int socketfd) {
 
 
     //send message back to the client (bytes & file contents)
-    write(socketfd, file_bytes, strlen(file_bytes));
+    write(socketfd, bytes_size, strlen(bytes_size));
     write(socketfd, message, strlen(message));
 }

@@ -1,1 +1,1 @@
-this is a small text file!
+this is a small text file inside the folder!
