@@ -26,6 +26,8 @@ int main(int argc, char *argv[]) {
     printf("Enter file to retrieve: ");
     scanf("%s",file_to_read);
 
+    //add a flag at the end of the file name
+
 
 
     //set up the port
