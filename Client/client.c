@@ -14,12 +14,19 @@ int main(int argc, char *argv[]) {
     short port;
     struct sockaddr_in servaddr;
     char buffer[2000];
+    char file_to_read[50];
 
     //get the listening port number from the command line
     if(argc < 2) {
         printf("Usage: %s PORT\n", argv[0]);
         exit(0);
     }
+
+    //get the file the client wants to retrieve
+    printf("Enter file to retrieve: ");
+    scanf("%s",file_to_read);
+
+
 
     //set up the port
     port = (short)atoi(argv[1]);
