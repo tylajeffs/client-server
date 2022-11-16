@@ -35,6 +35,13 @@ int main(int argc, char *argv[]) {
     //zero out the server address
     bzero(&server_addr, sizeof(server_addr));
 
+    //launch thread pool
+
+
+
+
+
+
     //set structs to contain internet addresses we might want to connect to
     server_addr.sin_family = AF_INET; //IPv4
     server_addr.sin_addr.s_addr = INADDR_ANY; //willing to connect to any IP address
@@ -75,15 +82,34 @@ int main(int argc, char *argv[]) {
 
 
 void handle_request(int socketfd) {
-    char message [200];
-    char buffer [200];
-    sprintf(message, "Message from the server");
+    char message[200];
+    char buffer[200];
+    //sprintf(message, "Message from the server");
 
     int bytes_read = 0;
 
     bytes_read = read(socketfd, buffer, 200); //max bytes to read is 200
     buffer[bytes_read] = 0;
-    printf("From Client (%d): %s\n", bytes_read, buffer);
+    printf("From Client (%d bytes): %s\n", bytes_read, buffer);
+
+
+    //open the file
+    FILE *ptr = fopen(buffer,"r");
+    if (NULL == ptr) {
+        printf("file can't be opened \n");
+        sprintf(message, "File cannot be opened");
+        exit(0);
+    } else {
+        printf("file opened\n");
+    }
+
+    //read the contents of the file
+    if(fgets(message, 200, ptr) != NULL) {
+        printf("File contents: %s\n", message);
+    }
+
+    //close the file
+    fclose(ptr);
 
     //send message back to the client
     write(socketfd, message, strlen(message));

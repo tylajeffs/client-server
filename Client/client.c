@@ -26,10 +26,6 @@ int main(int argc, char *argv[]) {
     printf("Enter file to retrieve: ");
     scanf("%s",file_to_read);
 
-    //add a flag at the end of the file name
-
-
-
     //set up the port
     port = (short)atoi(argv[1]);
     printf("Launching Client on Port: %d\n", port);
@@ -62,7 +58,7 @@ int main(int argc, char *argv[]) {
     }
 
     //message to send to the server
-    sprintf(buffer, "I am sending a message to the server.");
+    sprintf(buffer, "%s",file_to_read);
 
     //send message to the server
     write(sockfd, buffer, strlen(buffer));
