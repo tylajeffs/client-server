@@ -26,14 +26,14 @@ int main(int argc, char *argv[]) {
     printf("Launching Client on Port: %d\n", port);
 
     //create a new socket
-    server_sock = socket(AF_INET, SOCK_STREAM, 0);
-    if(server_sock == -1) {
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if(sockfd == -1) {
         printf("Could not create socket\n");
         exit(0);
     }
 
     //zero out the server address
-    bzero(&server_addr, sizeof(server_addr));
+    bzero(&servaddr, sizeof(servaddr));
 
     //set variables of the structs
     servaddr.sin_family = AF_INET; //IPv4

@@ -1,9 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
 #include <unistd.h>
+#include <string.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 
 void handle_request(int socketfd);
 
 int main(int argc, char *argv[]) {
-    
+
     int server_sock, client_sock, len;
     short port;
     struct sockaddr_in server_addr, client_addr;
