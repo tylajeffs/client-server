@@ -95,10 +95,11 @@ void handle_request(int socketfd) {
 
 
     //open the file
-    FILE *ptr = fopen(buffer,"r");
-    if (NULL == ptr) {
+    FILE *f = fopen(buffer,"r");
+    if (NULL == f) {
         printf("file can't be opened \n");
         sprintf(message, "File cannot be opened");
+        write(socketfd, message, strlen(message));
         exit(0);
     } else {
         printf("file opened\n");
@@ -110,12 +111,12 @@ void handle_request(int socketfd) {
     //sprintf(bytes_size, "%ld", file_bytes);
 
     //read the contents of the file
-    if(fgets(message, 200, ptr) != NULL) {
+    if(fgets(message, 200, f) != NULL) {
         printf("File contents: %s\n", message);
     }
 
     //close the file
-    fclose(ptr);
+    fclose(f);
 
 
     //send message back to the client (bytes & file contents)
