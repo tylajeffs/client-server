@@ -82,11 +82,12 @@ int main(int argc, char *argv[]) {
 
 
 void handle_request(int socketfd) {
+
     char message[200];
     char buffer[200];
     char bytes_size[20];
     int bytes_read = 0;
-    long int file_bytes = 0;
+    long int file_bytes;
 
 
     bytes_read = read(socketfd, buffer, 200); //max bytes to read is 200
@@ -105,15 +106,19 @@ void handle_request(int socketfd) {
         printf("file opened\n");
     }
 
-    //get the size of the file (in bytes)
-    //fseek(ptr, 0L, SEEK_END);
-    //file_bytes = ftell(ptr);
-    //sprintf(bytes_size, "%ld", file_bytes);
+    
 
     //read the contents of the file
     if(fgets(message, 200, f) != NULL) {
         printf("File contents: %s\n", message);
     }
+
+    //get the size of the file (in bytes)
+    fseek(f, 0, SEEK_END);
+    file_bytes = ftell(f);
+    printf("File Bytes: %ld\n", file_bytes);
+    printf("hello debugging\n");
+    sprintf(bytes_size, "%ld", file_bytes);
 
     //close the file
     fclose(f);
