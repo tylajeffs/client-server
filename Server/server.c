@@ -83,8 +83,8 @@ int main(int argc, char *argv[]) {
 
 void handle_request(int socketfd) {
 
-    char message[200];
-    char buffer[200];
+    char message[2000];
+    char buffer[2000];
     char bytes_size[20];
     int bytes_read = 0;
     long int file_bytes;
@@ -107,18 +107,35 @@ void handle_request(int socketfd) {
     }
 
     
-
-    //read the contents of the file
-    if(fgets(message, 200, f) != NULL) {
-        printf("File contents: %s\n", message);
-    }
-
     //get the size of the file (in bytes)
     fseek(f, 0, SEEK_END);
     file_bytes = ftell(f);
-    printf("File Bytes: %ld\n", file_bytes);
-    printf("hello debugging\n");
-    sprintf(bytes_size, "%ld", file_bytes);
+
+    //make sure the size is at least 3 bytes
+    if((file_bytes/100) < 1) {
+        //add a byte to the front
+        char zero[20] = "0";
+        sprintf(bytes_size, "%ld", file_bytes);
+        strcat(zero, bytes_size);
+
+        //erase the bytes and replace with the updated size with correct bytes
+        bzero(&bytes_size,sizeof(bytes_size));
+        strcat(bytes_size,zero);
+
+    } else {
+        //leave it 
+        sprintf(bytes_size, "%ld", file_bytes);
+        printf("this is the size: %s\n", bytes_size);
+    }
+
+    //set the pointer back to the front of the file
+    fseek(f, 0, SEEK_SET);
+    //read the contents of the file
+    int count = fread(&message, 1, file_bytes, f);
+
+    //error checking
+    printf("File contents: %s\n", message);
+    
 
     //close the file
     fclose(f);

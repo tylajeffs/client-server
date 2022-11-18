@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
 
-    int sockfd, bytes_read;
+    int sockfd, bytes_read = 0, file_size;
     short port;
     struct sockaddr_in servaddr;
     char buffer[2000];
@@ -62,11 +62,39 @@ int main(int argc, char *argv[]) {
 
     //send message to the server
     write(sockfd, buffer, strlen(buffer));
-    bzero(&buffer,sizeof(buffer)); //erase buffer
-    bytes_read = read(sockfd, buffer, sizeof(buffer)); //read the message from the server
-    buffer[bytes_read] = 0;
+    //erase buffer
+    bzero(&buffer,sizeof(buffer)); 
 
-    printf("From the server: %s\n", buffer);
+    //read the message from the server
+    //bytes_read = read(sockfd, buffer, sizeof(buffer)); 
+    //buffer[bytes_read] = 0;
+
+    //read the first 3 digits (this is the file size)
+    read(sockfd, buffer, 3); 
+    file_size = atoi(buffer);
+
+    //erase buffer
+    bzero(&buffer,sizeof(buffer)); 
+
+    //can I do this? it makes sure it reads the entire file size so technically its a while loop?
+    read(sockfd, buffer, file_size);
+    printf("From the server: \n%s\n", buffer);
+
+
+    /**
+    //read the rest of the message until it matches the file size sent
+    while(bytes_read < file_size) {
+        //read another byte
+        read(sockfd, buffer, 1); 
+        printf("inside while loop: %d\n",bytes_read);
+        printf("From the server: %s\n", buffer);
+
+        bytes_read++;
+    }
+
+    */
+
+
 }
 
 
