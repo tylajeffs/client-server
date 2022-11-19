@@ -76,23 +76,19 @@ int main(int argc, char *argv[]) {
     //erase buffer
     bzero(&buffer,sizeof(buffer)); 
 
-    //can I do this? it makes sure it reads the entire file size so technically its a while loop?
-    read(sockfd, buffer, file_size);
-    printf("From the server: \n%s\n", buffer);
-
-
-    /**
+    //set bytes read
+    bytes_read = 0;
+    
     //read the rest of the message until it matches the file size sent
     while(bytes_read < file_size) {
         //read another byte
-        read(sockfd, buffer, 1); 
-        printf("inside while loop: %d\n",bytes_read);
-        printf("From the server: %s\n", buffer);
-
-        bytes_read++;
+        bytes_read = read(sockfd, &buffer[bytes_read], (file_size - bytes_read)); 
     }
 
-    */
+    //print it
+    printf("From the server: %s\n", buffer);
+
+    
 
 
 }
